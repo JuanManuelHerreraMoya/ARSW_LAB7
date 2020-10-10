@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Cinema bookings</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="js/apimock.js"></script>
+    <script src="js/appiclient.js"></script>
+    <script src="js/app.js"></script>
+    <link rel="stylesheet"
+          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <style>
+        table, th, td, tr {
+          border: 1px solid black;
+          border-collapse: collapse;
+          text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-column-gap: 30px;
+            grid-template-columns: auto auto;
+            text-indent: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="inputData">
+        <h4>Cinemas Booking</h4></br>
+        <label>Cinema </label>
+        <input type="text" id="nameC"  value="cinemaX" />
+        <input type="date" id="dateC" value="2018-12-18" />
+        <button type="button" onclick="app.getFunctionsByCinemaAndDate()" > Get functions</button>
+    </div>
+
+    <div class="grid">
+        <div id="tables">
+            <h4 id="CinemaS"></h4>
+            <h4 id="Movie"></h4>
+
+            <table id="table1">
+                <thead id="thea1">
+                <tr>
+                    <th>Name</th>
+                    <th>Genre</th>
+                    <th>Hour</th>
+                    <th>Availability</th>
+                </tr>
+                </thead>
+                <tbody id="tbody1">
+                <tr>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="canvas">
+            <h4 id="Ava"></h4>
+            <canvas id="myCanvas" width="400" height="300" style="border:1px solid #000000;"/>
+        </div>
+        <div></div>
+
+        <div id="opcionBotones">
+            <button type="button" onclick="app.windowTicket()">Buy Ticket</button>
+            <button type="button" onclick="app.windowAdmin()">Administrator</button>
+        </div>
+
+    </div>
+
+    <div class="grid">
+        <div></div>
+        <div id="buy" style="display: none">
+            <h4 id="nChair">Number of available chairs: </h4>
+            <label>Seat</label>
+            <input type="text" id="row"  value="Row">
+            <input type="text" id="column" value="Column">
+            <button type="button" onclick="app.buyTicket()">Buy</button>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div></div>
+        <div id="admin" style="display: none">
+            <h4>Administrator mode:</h4>
+            <label>Edit Function: </label>
+            <input type="text" id="hour"  value="new Hour" />
+            <button type="button" onclick="app.updateHour()">Save/Update</button><br><br>
+            <button type="button" onclick="app.createFunction()">Create new function</button>
+            <button type="button"  onclick="app.deleteFunction()">Delete Function</button>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div></div>
+        <div id="post" style="display: none">
+            <h4>New Movie</h4>
+            <input type="text" id="newMovie" value="Matrix" /><br>
+            <input type="text" id="newGenre"  value="Action" /><br>
+            <input type="text" id="newHour"  value="00:00" /><br>
+            <button type="button" onclick="app.newMovie()">Insert new movie</button>
+        </div>
+    </div>
+
+
+
+</body>
+</html>
+
