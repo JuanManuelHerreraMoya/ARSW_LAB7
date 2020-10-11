@@ -48,11 +48,10 @@ appiclient = (function (){
     }
 
     function deleteFunction(cinema, cf, callback){
-
        var cinemaFunction = JSON.stringify(cf);
        var delPromise = $.ajax({
            url: "http://localhost:8080/cinemas/" + cinema,
-           type: 'PUT',
+           type: 'DELETE',
            data: cinemaFunction,
            contentType: "application/json"
        });

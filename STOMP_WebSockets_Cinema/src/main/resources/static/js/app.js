@@ -159,6 +159,7 @@ var app = (function () {
     _setFunctionDate($("#dateC").val());
     var row = $("#row").val();
     var col = $("#column").val();
+    verifyAvailability(row,col);
     modulo.buyTicket(row, col, cinemaName, dateByMovie, movieName, _confirmation);
   }
 
@@ -178,6 +179,63 @@ var app = (function () {
     _drawSeats(movieName);
   }
 
+  class Seat {
+      constructor(row, col) {
+          this.row = row;
+          this.col = col;
+      }
+  }
+
+  var stompClient = null;
+
+  //get the x, y positions of the mouse click relative to the canvas
+  var getMousePosition = function (evt) {
+      $('#myCanvas').click(function (e) {
+          var rect = canvas.getBoundingClientRect();
+          var x = e.clientX - rect.left;
+          var y = e.clientY - rect.top;
+          console.info(x);
+          console.info(y);
+      });
+
+  };
+
+  var connectAndSubscribe = function () {
+      console.info('Connecting to WS...');
+      var socket = new SockJS('/stompendpoint');
+      stompClient = Stomp.over(socket);
+      console.log(stompClient);
+      //subscribe to /topic/TOPICXX when connections succeed
+      stompClient.connect({}, function (frame) {
+          console.log('Connected: ' + frame);
+          stompClient.subscribe('/topic/buyticket', function (eventbody) {
+             console.log("hola"+eventbody)
+             var theObject=JSON.parse(eventbody.body);
+             alert("Seats bought for Cinema: "+ cinemaName +", row: "+theObject.row+", col: "+theObject.col);
+          });
+      });
+
+  };
+
+  var verifyAvailability = function (row,col) {
+      var st = new Seat(row, col);
+      if (seats[row][col]===true){
+          seats[row][col]=false;
+          console.info("purchased ticket");
+          stompClient.send("/topic/buyticket", {}, JSON.stringify(st));
+
+      }
+      else{
+          console.info("Ticket not available");
+      }
+
+  };
+
+  init = function(){
+    connectAndSubscribe();
+  }
+
+
   return {
 
         getFunctionsByCinemaAndDate: getFunctionsByCinemaAndDate,
@@ -188,8 +246,8 @@ var app = (function () {
         updateHour: updateHour,
         createFunction: createFunction,
         deleteFunction: deleteFunction,
-        newMovie: newMovie
-
+        newMovie: newMovie,
+        init: init
   };
 
 })();

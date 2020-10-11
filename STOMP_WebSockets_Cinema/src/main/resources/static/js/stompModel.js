@@ -23,7 +23,7 @@ var app2 = (function () {
     };
     
     var drawSeats = function (cinemaFunction) {
-        var c = document.getElementById("myCanvas");
+        var c = document.getElementById("canvas");
         var ctx = c.getContext("2d");
         ctx.fillStyle = "#001933";
         ctx.fillRect(100, 20, 300, 80);

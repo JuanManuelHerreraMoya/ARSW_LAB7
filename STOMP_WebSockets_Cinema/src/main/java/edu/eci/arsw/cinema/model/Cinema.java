@@ -64,7 +64,7 @@ public class Cinema {
 
     public void setCinemaFuntion(CinemaFunction cf){
         for(CinemaFunction i: functions){
-            System.out.println(i.getMovie().getName().equals(cf.getMovie().getName()));
+            //System.out.println(i.getMovie().getName().equals(cf.getMovie().getName()));
             if(i.getMovie().getName().equals(cf.getMovie().getName())){
                 i.setDate(cf.getDate());
                 i.setMovie(cf.getMovie());
