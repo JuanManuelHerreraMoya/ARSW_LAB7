@@ -9,6 +9,9 @@ var app = (function () {
   var updateF;
   var movieName;
   var dateByMovie;
+  var rol;
+  var col;
+  var tempSeats;
 
   function _setCinemaName(cinema){
        cinemaName = cinema;
@@ -95,8 +98,8 @@ var app = (function () {
   }
 
   function windowAdmin() {
-    var ticket = document.getElementById("buy");
-    ticket.style.display = "none";
+    //var ticket = document.getElementById("buy");
+    //ticket.style.display = "none";
     var admi = document.getElementById("admin");
     if (admi.style.display === "none") {
       admi.style.display = "block";
@@ -157,10 +160,8 @@ var app = (function () {
   function buyTicket(){
     _setCinemaName($("#nameC").val());
     _setFunctionDate($("#dateC").val());
-    var row = $("#row").val();
-    var col = $("#column").val();
     verifyAvailability(row,col);
-    modulo.buyTicket(row, col, cinemaName, dateByMovie, movieName, _confirmation);
+    //modulo.buyTicket(row, col, cinemaName, dateByMovie, movieName, _confirmation);
   }
 
   function _confirmation(){
@@ -186,16 +187,57 @@ var app = (function () {
       }
   }
 
+  function _showLimits(x,y){
+
+    var minx = 20;
+    var maxx = 40;
+    var newX = 0;
+    var miny = 90;
+    var maxy = 110;
+    var newY = 0;
+    var confirm = true;
+    for (var i = 0; i < seats.length; i++) {
+        if(minx<=x && x<=maxx){
+            break;
+        }else if(x>maxx){
+            newX = newX+1;
+            minx = maxx+10;
+            maxx = maxx+30;
+        }else{
+            confirm = false;
+            break;
+        }
+    }
+    for (var i = 0; i < seats.length; i++) {
+        if(miny<=y && y<=maxy){
+            break;
+        }else if(y>maxy){
+            newY = newY+1;
+            miny = maxy+10;
+            maxy = maxy+30;
+        }else{
+            confirm = false;
+            break;
+        }
+    }
+    if(confirm){
+        row = newY;
+        col = newX;
+        buyTicket();
+    }
+
+  }
   var stompClient = null;
 
   //get the x, y positions of the mouse click relative to the canvas
   var getMousePosition = function (evt) {
+      _setCinemaName($("#nameC").val());
+      _setFunctionDate($("#dateC").val());
       $('#myCanvas').click(function (e) {
           var rect = canvas.getBoundingClientRect();
           var x = e.clientX - rect.left;
           var y = e.clientY - rect.top;
-          console.info(x);
-          console.info(y);
+          _showLimits(x,y);
       });
 
   };
@@ -211,7 +253,9 @@ var app = (function () {
           stompClient.subscribe('/topic/buyticket', function (eventbody) {
              console.log("hola"+eventbody)
              var theObject=JSON.parse(eventbody.body);
-             alert("Seats bought for Cinema: "+ cinemaName +", row: "+theObject.row+", col: "+theObject.col);
+             //alert("Seats bought for Cinema: "+ cinemaName +", row: "+theObject.row+", col: "+theObject.col);
+             modulo.buyTicket(theObject.row, theObject.col, cinemaName, dateByMovie, movieName, _confirmation);
+
           });
       });
 
@@ -223,7 +267,6 @@ var app = (function () {
           seats[row][col]=false;
           console.info("purchased ticket");
           stompClient.send("/topic/buyticket", {}, JSON.stringify(st));
-
       }
       else{
           console.info("Ticket not available");
@@ -232,7 +275,7 @@ var app = (function () {
   };
 
   init = function(){
-    connectAndSubscribe();
+    connectAndSubscribe(_confirmation);
   }
 
 
@@ -247,7 +290,8 @@ var app = (function () {
         createFunction: createFunction,
         deleteFunction: deleteFunction,
         newMovie: newMovie,
-        init: init
+        init: init,
+        getMousePosition: getMousePosition
   };
 
 })();
