@@ -1,3 +1,16 @@
+# Requisitos:
+
+Para poder compilar el proyecto debe seguir las siguientes instrucciones, recuerde ir a la carpeta donde esta el pom y desde consola ejecutar las siguientes lineas.
+    
+    - mvn clean
+    - mvn package
+    - mvn spring-boot:run
+    
+
+# Nota
+
+En particular para la cuarta parte, para poder ver bien la funcionalidad se debe dar clik en getFunction y de nuevo en Open Seats, no se logro actualizar la pagina en otras pestañas en todas las ocasiones, hay veces que no actualiza.
+
 # ARSW_LAB7 STOMP - Cinema Books
 
 
@@ -5,13 +18,13 @@
 
 Este ejercicio se basa en la documentación oficial de SpringBoot, para el manejo de WebSockets con STOMP.
 En este repositorio se encuentra una aplicación SpringBoot que está configurado como Broker de mensajes, de forma similar a lo mostrado en la siguiente figura:
-()Foto
+![]()
 En este caso, el manejador de mensajes asociado a "/app" aún no está configurado, pero sí lo está el broker '/topic'. Como mensaje, se usarán localizaciones de pantalla, pues se espera que esta aplicación permita propagar eventos de compra de asientos seleccionando en el canvas el asiento deseado. Este proyecto parte como continuación a el proyecto de compra/reserva de tickets
 
 # Parte I.
 
 Para las partes I y II, usted va a implementar una herramienta que permita integrarse al proyecto de el proyecto de compra/reserva de tickets, basada en el siguiente diagrama de actividades:
-()Foto
+![](https://github.com/JuanManuelHerreraMoya/ARSW_LAB7/blob/master/STOMP_WebSockets_Cinema/img/Activity.png)
 Para esto, realice lo siguiente:
 
   1.  Agregue en la parte inferior del canvas dos campos para la captura de las posiciones de los asientos a comprar (row, col), y un botón 'Buy ticket' para hacer efectiva la compra
@@ -32,6 +45,10 @@ Para esto, realice lo siguiente:
   6.  Haga commit de lo realizado, para demarcar el avance de la parte 2.
   
     git commit -m "PARTE 1".
+    
+![](https://github.com/JuanManuelHerreraMoya/ARSW_LAB7/blob/master/STOMP_WebSockets_Cinema/img/parte1A.PNG)
+
+![](https://github.com/JuanManuelHerreraMoya/ARSW_LAB7/blob/master/STOMP_WebSockets_Cinema/img/parte1B.PNG)
 
 # Parte II.
 
@@ -48,6 +65,9 @@ Para hacer mas útil la aplicación, en lugar de capturar las coordenadas con ca
   
     git commit -m "PARTE 2".
   
+![](https://github.com/JuanManuelHerreraMoya/ARSW_LAB7/blob/master/STOMP_WebSockets_Cinema/img/parte2A.PNG)
+
+![](https://github.com/JuanManuelHerreraMoya/ARSW_LAB7/blob/master/STOMP_WebSockets_Cinema/img/parte2B.PNG)
 # Parte III.
 
 Ajuste la aplicación anterior para que pueda manejar la compra de asientos en más de una sala a la vez, manteniendo tópicos independientes. Para esto:
@@ -57,6 +77,8 @@ Ajuste la aplicación anterior para que pueda manejar la compra de asientos en m
   4.  Rectifique que se puedan realizar dos compras de asientos de forma independiente, cada uno de éstos entre dos o más clientes.
 
     git commit -m "PARTE 3".
+
+![](https://github.com/JuanManuelHerreraMoya/ARSW_LAB7/blob/master/STOMP_WebSockets_Cinema/img/parte3A.PNG)
     
 # Parte IV.
 
@@ -92,3 +114,5 @@ Para ver cómo manejar esto desde el manejador de eventos STOMP del servidor, re
           4.  Pruebe la funcionalidad comprando tickets en más de 2 salas al tiempo y verificando que no se cruce la compra de los asientos de una sala a otra
   4.  A partir de los diagramas dados en el archivo ASTAH incluido, haga un nuevo diagrama de actividades correspondiente a lo realizado hasta este punto, teniendo en cuenta el detalle de que ahora se tendrán tópicos dinámicos para manejar diferentes salas simultáneamente y que desde el servidor se centraliza la información de las asientos de las salas.
   5.  Haga commit de lo realizado.
+
+![](https://github.com/JuanManuelHerreraMoya/ARSW_LAB7/blob/master/STOMP_WebSockets_Cinema/img/parte4A.PNG)
