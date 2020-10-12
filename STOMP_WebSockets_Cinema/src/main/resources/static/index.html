@@ -34,14 +34,15 @@
 
 </head>
 
-<body onload="app.init()">
+<body <!--onload="app.init()"-->>
 
     <div id="inputData">
         <h4>Cinemas Booking</h4></br>
         <label>Cinema </label>
         <input type="text" id="nameC"  value="cinemaX" />
         <input type="date" id="dateC" value="2018-12-18" />
-        <button type="button" onclick="app.getFunctionsByCinemaAndDate()" > Get functions</button>
+        <input type="text" id="movieName" value="SuperHeroes Movie	" />
+        <button type="button" onclick="app.getFunctionsByCinemaAndDateMovie()" >Conectarse</button>
     </div>
 
     <div class="grid">

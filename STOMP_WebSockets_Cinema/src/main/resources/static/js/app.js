@@ -21,6 +21,10 @@ var app = (function () {
     functionDate = date;
   }
 
+  function _setMovieName(movie){
+    movieName = movie;
+  }
+
   function _setDateToHour(cinema){
     return {name: cinema.movie.name, genre: cinema.movie.genre, hour: cinema.date.substring(11, 16)};
   }
@@ -32,7 +36,16 @@ var app = (function () {
     modulo.getFunctionsByCinemaAndDate(cinemaName, functionDate, _prettyPrint);
   }
 
+  function getFunctionsByCinemaAndDateMovie(){
+    _setCinemaName($("#nameC").val());
+    _setFunctionDate($("#dateC").val());
+    _setMovieName($("#movieName").val());
+    console.log(movieName);
+    modulo.getFunctionsByCinemaDateMovie(cinemaName, functionDate, movieName, _prettyPrint);
+  }
+
   function _prettyPrint(list){
+    init();
     var table = $("#table1");
     var body = $("tbody");
     originalFunctions = list;
@@ -166,7 +179,8 @@ var app = (function () {
 
   function _confirmation(){
     _resetCanvas();
-    modulo.getFunctionsByCinemaAndDate(cinemaName, functionDate, _ok);
+    //modulo.getFunctionsByCinemaAndDate(cinemaName, functionDate, _ok);
+    modulo.getFunctionsByCinemaAndDateMovie(cinemaName, functionDate, movieName, _ok);
   }
 
   function _ok(data){
@@ -250,7 +264,7 @@ var app = (function () {
       //subscribe to /topic/TOPICXX when connections succeed
       stompClient.connect({}, function (frame) {
           console.log('Connected: ' + frame);
-          stompClient.subscribe('/topic/buyticket', function (eventbody) {
+          stompClient.subscribe("/topic/buyticket."+cinemaName+"."+functionDate+"."+movieName, function (eventbody) {
              console.log("hola"+eventbody)
              var theObject=JSON.parse(eventbody.body);
              //alert("Seats bought for Cinema: "+ cinemaName +", row: "+theObject.row+", col: "+theObject.col);
@@ -266,7 +280,7 @@ var app = (function () {
       if (seats[row][col]===true){
           seats[row][col]=false;
           console.info("purchased ticket");
-          stompClient.send("/topic/buyticket", {}, JSON.stringify(st));
+          stompClient.send("/topic/buyticket."+cinemaName+"."+functionDate+"."+movieName, {}, JSON.stringify(st));
       }
       else{
           console.info("Ticket not available");
@@ -282,6 +296,7 @@ var app = (function () {
   return {
 
         getFunctionsByCinemaAndDate: getFunctionsByCinemaAndDate,
+        getFunctionsByCinemaAndDateMovie: getFunctionsByCinemaAndDateMovie,
         getSeatsByFunction: getSeatsByFunction,
         windowTicket: windowTicket,
         windowAdmin: windowAdmin,

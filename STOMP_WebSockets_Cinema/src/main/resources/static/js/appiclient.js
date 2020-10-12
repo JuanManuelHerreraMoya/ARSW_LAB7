@@ -14,6 +14,13 @@ appiclient = (function (){
             }, 'json');
     }
 
+    function getFunctionsByCinemaDateMovie(cinema, date, movie, callback){
+
+            $.get("http://localhost:8080/cinemas/"+cinema+"/"+date+"/"+movie, function(data){
+                    callback(data);
+                }, 'json');
+        }
+
     function updateFunction(cinema, cf, callback){
         var cinemaFunction = JSON.stringify(cf);
         var postPromise = $.ajax({
@@ -81,6 +88,7 @@ appiclient = (function (){
     return{
         getFunctionsByCinema: getFunctionsByCinema,
         getFunctionsByCinemaAndDate: getFunctionsByCinemaAndDate,
+        getFunctionsByCinemaDateMovie: getFunctionsByCinemaDateMovie,
         updateFunction: updateFunction,
         createFunction: createFunction,
         deleteFunction: deleteFunction,
