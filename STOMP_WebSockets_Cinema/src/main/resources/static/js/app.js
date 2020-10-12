@@ -21,9 +21,6 @@ var app = (function () {
     functionDate = date;
   }
 
-  function _setMovieName(movie){
-    movieName = movie;
-  }
 
   function _setDateToHour(cinema){
     return {name: cinema.movie.name, genre: cinema.movie.genre, hour: cinema.date.substring(11, 16)};
@@ -39,13 +36,12 @@ var app = (function () {
   function getFunctionsByCinemaAndDateMovie(){
     _setCinemaName($("#nameC").val());
     _setFunctionDate($("#dateC").val());
-    _setMovieName($("#movieName").val());
+    //_setMovieName($("#movieName").val());
     console.log(movieName);
     modulo.getFunctionsByCinemaDateMovie(cinemaName, functionDate, movieName, _prettyPrint);
   }
 
   function _prettyPrint(list){
-    init();
     var table = $("#table1");
     var body = $("tbody");
     originalFunctions = list;
@@ -70,6 +66,8 @@ var app = (function () {
   }
 
   function getSeatsByFunction(name, dateTime){
+    movieName = name;
+    init();
     originalFunctions.forEach(function(cinema) {
         if(cinema.movie.name===name  && cinema.date===dateTime){
             seats = cinema.seats;
@@ -179,8 +177,8 @@ var app = (function () {
 
   function _confirmation(){
     _resetCanvas();
-    //modulo.getFunctionsByCinemaAndDate(cinemaName, functionDate, _ok);
-    modulo.getFunctionsByCinemaAndDateMovie(cinemaName, functionDate, movieName, _ok);
+    modulo.getFunctionsByCinemaAndDate(cinemaName, functionDate, _ok);
+    //modulo.getFunctionsByCinemaAndDateMovie(cinemaName, functionDate, movieName, _ok);
   }
 
   function _ok(data){
@@ -280,7 +278,7 @@ var app = (function () {
       if (seats[row][col]===true){
           seats[row][col]=false;
           console.info("purchased ticket");
-          stompClient.send("/topic/buyticket."+cinemaName+"."+functionDate+"."+movieName, {}, JSON.stringify(st));
+          stompClient.send("/app/buyticket."+cinemaName+"."+functionDate+"."+movieName, {}, JSON.stringify(st));
       }
       else{
           console.info("Ticket not available");

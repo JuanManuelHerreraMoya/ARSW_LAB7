@@ -60,9 +60,12 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
     public void buyTicket(int row, int col, String cinema, String date, String movieName) throws CinemaException, CinemaModelException {
         Cinema cn = getCinema(cinema);
         CinemaFunction cinemaF =cn.getFunctionByNameAndDate(movieName,date);
-        if (cinemaF != null){
-            cinemaF.buyTicket(row,col);
+        synchronized (cinemaF){
+            if (cinemaF != null){
+                cinemaF.buyTicket(row,col);
+            }
         }
+
     }
 
     @Override
